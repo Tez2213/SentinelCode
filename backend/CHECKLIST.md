@@ -12,13 +12,34 @@ Copy this checklist to track your setup progress!
 
 ## 🔑 GitHub OAuth Setup
 
-- [ ] Go to GitHub Settings → Developer settings → OAuth Apps
-- [ ] Click "New OAuth App"
-- [ ] Set Application name: "SentinelCode Dev"
-- [ ] Set Homepage URL: `http://localhost:3000`
-- [ ] Set Callback URL: `http://localhost:8000/api/auth/github/callback`
-- [ ] Copy Client ID to `.env` file
-- [ ] Copy Client Secret to `.env` file
+**📖 Detailed guide: [GITHUB_SETUP.md](./GITHUB_SETUP.md)**
+
+- [ ] **Go to GitHub Developer Settings**
+  - Visit: https://github.com/settings/developers
+  - Click "OAuth Apps" in sidebar
+
+- [ ] **Create New OAuth App**
+  - Click "New OAuth App" button
+  - Application name: `SentinelCode Local`
+  - Homepage URL: `http://localhost:3000`
+  - Callback URL: `http://localhost:8000/api/v1/auth/github/callback`
+  - Click "Register application"
+
+- [ ] **Copy Client ID**
+  - Displayed on app settings page
+  - Format: `Iv1.xxxxxxxxxx`
+  - Add to `.env` as `GITHUB_CLIENT_ID`
+
+- [ ] **Generate Client Secret**
+  - Click "Generate a new client secret"
+  - **⚠️ Copy immediately** (you can't see it again!)
+  - Format: long alphanumeric string
+  - Add to `.env` as `GITHUB_CLIENT_SECRET`
+
+- [ ] **Verify callback URL**
+  - Double-check it matches: `http://localhost:8000/api/v1/auth/github/callback`
+  - No trailing slash
+  - Exact match required
 
 ## 🗄️ Database Setup
 
@@ -33,10 +54,19 @@ Copy this checklist to track your setup progress!
 
 ## 🔐 Security Configuration
 
-- [ ] Generate SECRET_KEY (random string): `openssl rand -hex 32`
-- [ ] Add to `.env`: `SECRET_KEY=<your-random-key>`
-- [ ] Generate JWT_SECRET_KEY: `openssl rand -hex 32`
-- [ ] Add to `.env`: `JWT_SECRET_KEY=<your-jwt-key>`
+- [ ] **Generate SECRET_KEY**
+  - Run: `python -c "import secrets; print(secrets.token_urlsafe(32))"`
+  - Copy the output
+  - Add to `.env`: `SECRET_KEY=<your-random-key>`
+
+- [ ] **Verify all environment variables**
+  - `DATABASE_URL` set correctly
+  - `GITHUB_CLIENT_ID` added
+  - `GITHUB_CLIENT_SECRET` added
+  - `GITHUB_REDIRECT_URI` set to callback URL
+  - `SECRET_KEY` generated and added
+  - `ALGORITHM=HS256`
+  - `ACCESS_TOKEN_EXPIRE_MINUTES=43200`
 
 ## 🗃️ Database Migrations
 

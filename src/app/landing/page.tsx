@@ -55,20 +55,22 @@ export default function LandingPage() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link href="/dashboard">
-              <Button variant="terminal" size="lg" className="group text-base px-8 py-6">
-                <Github className="w-5 h-5" />
-                Login with GitHub
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
+            <Button 
+              variant="terminal" 
+              size="lg" 
+              className="group text-base px-8 py-6"
+              onClick={() => window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/github`}
+            >
+              <Github className="w-5 h-5" />
+              Login with GitHub
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Button>
             
-            <Link href="/dashboard">
-              <Button variant="outline" size="lg" className="text-base px-8 py-6">
-                <GitBranch className="w-5 h-5" />
-                Login with GitLab
-              </Button>
-            </Link>
+            <Button variant="outline" size="lg" className="text-base px-8 py-6" disabled>
+              <GitBranch className="w-5 h-5" />
+              Login with GitLab
+              <span className="ml-2 text-xs text-zinc-500">(Coming Soon)</span>
+            </Button>
           </div>
 
           <div className="mt-8">

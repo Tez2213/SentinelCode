@@ -76,14 +76,51 @@ pip install -r requirements.txt
 ```powershell
 # Copy the example file
 copy .env.example .env
-
-# Open .env and configure these REQUIRED variables:
-# - SECRET_KEY (generate a random string)
-# - JWT_SECRET_KEY (generate another random string)
-# - DATABASE_URL (PostgreSQL connection)
-# - GITHUB_CLIENT_ID (create GitHub OAuth app)
-# - GITHUB_CLIENT_SECRET (from GitHub OAuth app)
 ```
+
+Edit `.env` and configure these REQUIRED variables:
+
+```env
+# Database
+DATABASE_URL=postgresql://postgres:password@localhost:5432/sentinelcode_dev
+
+# GitHub OAuth (See GITHUB_SETUP.md for detailed instructions)
+GITHUB_CLIENT_ID=your_github_client_id_here
+GITHUB_CLIENT_SECRET=your_github_client_secret_here
+GITHUB_REDIRECT_URI=http://localhost:8000/api/v1/auth/github/callback
+
+# Security
+SECRET_KEY=your_secret_key_here  # Generate with: python -c "import secrets; print(secrets.token_urlsafe(32))"
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=43200
+
+# Application
+APP_NAME=SentinelCode
+DEBUG=True
+```
+
+#### 📋 GitHub OAuth Setup
+
+**To get your GitHub credentials, follow the detailed guide:**
+
+👉 **[GITHUB_SETUP.md](./GITHUB_SETUP.md)** - Complete step-by-step instructions
+
+**Quick summary:**
+1. Go to https://github.com/settings/developers
+2. Click "OAuth Apps" → "New OAuth App"
+3. Set callback URL to: `http://localhost:8000/api/v1/auth/github/callback`
+4. Copy Client ID and generate Client Secret
+5. Paste them into your `.env` file
+
+#### 🔐 Generate JWT Secret
+
+Generate a secure random key for JWT token signing:
+
+```powershell
+python -c "import secrets; print(secrets.token_urlsafe(32))"
+```
+
+Copy the output and paste it as your `SECRET_KEY` in `.env`.
 
 ### Step 6: Set Up PostgreSQL Database
 
@@ -160,13 +197,24 @@ The API will be running at: **http://localhost:8000**
 
 ## 🔑 GitHub OAuth Setup
 
-1. Go to GitHub → Settings → Developer settings → OAuth Apps
-2. Click "New OAuth App"
+**📖 For detailed instructions, see [GITHUB_SETUP.md](./GITHUB_SETUP.md)**
+
+Quick steps:
+1. Go to https://github.com/settings/developers
+2. Click "OAuth Apps" → "New OAuth App"
 3. Fill in:
-   - **Application name**: SentinelCode Dev
+   - **Application name**: SentinelCode Local
    - **Homepage URL**: http://localhost:3000
-   - **Authorization callback URL**: http://localhost:8000/api/auth/github/callback
-4. Save the Client ID and Client Secret to your `.env` file
+   - **Authorization callback URL**: http://localhost:8000/api/v1/auth/github/callback
+4. Copy the Client ID
+5. Generate and copy the Client Secret (⚠️ save it immediately!)
+6. Add both to your `.env` file
+
+**Need help?** The [GITHUB_SETUP.md](./GITHUB_SETUP.md) guide includes:
+- Detailed screenshots and explanations
+- Troubleshooting common issues
+- Production deployment instructions
+- Security best practices
 
 ## 🧪 Testing the Backend
 

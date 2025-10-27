@@ -30,6 +30,13 @@ cp .env.example .env
 # Edit .env with your configuration
 ```
 
+**📖 GitHub OAuth Setup Required:**
+Follow the detailed guide in [GITHUB_SETUP.md](./GITHUB_SETUP.md) to:
+- Create a GitHub OAuth App
+- Get your Client ID and Client Secret
+- Configure the callback URL
+- Add credentials to `.env`
+
 4. **Set up PostgreSQL** (local development)
 ```bash
 # Create database
@@ -135,12 +142,16 @@ docker run -p 8000:8000 --env-file .env sentinelcode-backend
 
 See `.env.example` for all required environment variables.
 
-Key variables:
+**Key variables:**
 - `DATABASE_URL`: PostgreSQL connection string
-- `SECRET_KEY`: Application secret key
-- `GITHUB_CLIENT_ID`: GitHub OAuth app ID
-- `GITHUB_CLIENT_SECRET`: GitHub OAuth secret
-- `JWT_SECRET_KEY`: JWT signing key
+- `SECRET_KEY`: Application secret key (generate with: `python -c "import secrets; print(secrets.token_urlsafe(32))"`)
+- `GITHUB_CLIENT_ID`: GitHub OAuth app ID (see [GITHUB_SETUP.md](./GITHUB_SETUP.md))
+- `GITHUB_CLIENT_SECRET`: GitHub OAuth secret (see [GITHUB_SETUP.md](./GITHUB_SETUP.md))
+- `GITHUB_REDIRECT_URI`: OAuth callback URL (`http://localhost:8000/api/v1/auth/github/callback`)
+- `ALGORITHM`: JWT algorithm (default: `HS256`)
+- `ACCESS_TOKEN_EXPIRE_MINUTES`: Token expiration (default: `43200` = 30 days)
+
+**📖 For GitHub OAuth setup instructions, see [GITHUB_SETUP.md](./GITHUB_SETUP.md)**
 
 ## 🔒 Security
 
@@ -152,11 +163,15 @@ Key variables:
 
 ## 📖 Next Steps
 
-1. Set up GitHub OAuth app
-2. Configure database connection
-3. Test authentication flow
-4. Implement webhook handling
-5. Integrate with AI services (Phase 4)
+1. ✅ Backend structure created
+2. 📖 **[Set up GitHub OAuth](./GITHUB_SETUP.md)** - Get your credentials
+3. ⏳ Configure database connection
+4. ⏳ Test authentication flow
+5. ⏳ Implement GitHub service (`app/services/github.py`)
+6. ⏳ Complete webhook handling
+7. ⏳ Integrate with AI services (Phase 4)
+
+**Start here:** Follow [GITHUB_SETUP.md](./GITHUB_SETUP.md) to get your GitHub OAuth credentials.
 
 ## 🤝 Contributing
 

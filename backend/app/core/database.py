@@ -7,8 +7,14 @@ from sqlalchemy.orm import sessionmaker
 from app.core.config import settings
 
 # Create database engine
+# Add connect_args for SQLite to allow multi-threading
+connect_args = {}
+if settings.DATABASE_URL.startswith("sqlite"):
+    connect_args = {"check_same_thread": False}
+
 engine = create_engine(
     settings.DATABASE_URL,
+    connect_args=connect_args,
     pool_pre_ping=True,
     echo=settings.DEBUG,
 )
@@ -27,3 +33,9 @@ def get_db():
         yield db
     finally:
         db.close()
+
+
+# Function to create all tables
+def create_tables():
+    """Create all database tables"""
+    Base.metadata.create_all(bind=engine)

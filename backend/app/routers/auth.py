@@ -71,13 +71,18 @@ async def github_callback(code: str, db: Session = Depends(get_db)):
             username=github_user["login"],
             email=github_user.get("email"),
             avatar_url=github_user.get("avatar_url"),
+            access_token=access_token,  # Store access token
             last_login=datetime.utcnow(),
         )
         db.add(user)
         db.commit()
         db.refresh(user)
     else:
-        # Update last login
+        # Update user info and last login
+        user.username = github_user["login"]
+        user.email = github_user.get("email")
+        user.avatar_url = github_user.get("avatar_url")
+        user.access_token = access_token  # Update access token
         user.last_login = datetime.utcnow()
         db.commit()
     
